@@ -50,11 +50,64 @@
         var playerDwidth = 40;
         var playerDheight = 45;
 
+        var playerSpritesheetXY = [];
+        var playerImgTotal = 16;
+        var rowCount = 0;
+
+        for (var i = 0; i < playerImgTotal; i++) {
+            playerSpritesheetXY[i] = new Array(2);
+
+            playerSpritesheetXY[i][0] = i % 4 * PLAYER_S_WIDTH;
+
+            if (i % 4 == 0 && i != 0) {
+                rowCount++
+                playerSpritesheetXY[i][1] = rowCount * PLAYER_S_HEIGHT;
+            } else {
+                playerSpritesheetXY[i][1] = rowCount * PLAYER_S_HEIGHT;
+            }
+        }
+
         function mainloop() { // loop runs code 50 times per second 
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
-            
-            drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
 
+            drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
+            playerMove()
+        }
+
+        var playerSpriteImgNum = 0;
+
+        function playerMove() {
+            playerSxPos = playerSpritesheetXY[playerSpriteImgNum][0];
+            playerSyPos = playerSpritesheetXY[playerSpriteImgNum][1];
+
+            if (downKeyPressed == true) {
+                playerDyPos += playerYspeed;
+                playerSpriteImgNum++;
+                if(playerSpriteImgNum > 3){
+                    playerSpriteImgNum = 0;
+                }
+            }
+            if (upKeyPressed == true) {
+                playerDyPos -= playerYspeed;
+                playerSpriteImgNum++;
+                if(playerSpriteImgNum < 12 || playerSpriteImgNum > 15){
+                    playerSpriteImgNum = 12;
+                }
+            }
+            if (rightKeyPressed == true) {
+                playerDxPos += playerXspeed;
+                playerSpriteImgNum++;
+                if(playerSpriteImgNum < 4 || playerSpriteImgNum > 8){
+                    playerSpriteImgNum = 4;
+                }
+            }
+            if (leftKeyPressed == true) {
+                playerDxPos -= playerXspeed;
+                playerSpriteImgNum++;
+                if(playerSpriteImgNum < 8 || playerSpriteImgNum > 11){
+                    playerSpriteImgNum = 8;
+                }
+            }
         }
 
         function keyPressed(evt) {
