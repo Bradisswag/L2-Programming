@@ -76,36 +76,49 @@
 
         var playerSpriteImgNum = 0;
 
-        function playerMove() {
-            playerSxPos = playerSpritesheetXY[playerSpriteImgNum][0];
-            playerSyPos = playerSpritesheetXY[playerSpriteImgNum][1];
 
-            if (downKeyPressed == true) {
+        function playerMove() {
+            var animationRate = 0.1;
+            
+            playerSxPos = playerSpritesheetXY[Math.floor(playerSpriteImgNum)][0];
+            playerSyPos = playerSpritesheetXY[Math.floor(playerSpriteImgNum)][1];
+            
+            // move down but stops at bottom of screen
+            if (downKeyPressed && playerDyPos < canvas.height - playerDheight) {
                 playerDyPos += playerYspeed;
-                playerSpriteImgNum++;
-                if(playerSpriteImgNum > 3){
+                playerSpriteImgNum += animationRate;
+                if (playerSpriteImgNum > 3) {
                     playerSpriteImgNum = 0;
                 }
             }
-            if (upKeyPressed == true) {
+            if (upKeyPressed) {
                 playerDyPos -= playerYspeed;
-                playerSpriteImgNum++;
-                if(playerSpriteImgNum < 12 || playerSpriteImgNum > 15){
+                playerSpriteImgNum += animationRate;
+                if (playerSpriteImgNum < 12 || playerSpriteImgNum > 15) {
                     playerSpriteImgNum = 12;
                 }
-            }
-            if (rightKeyPressed == true) {
-                playerDxPos += playerXspeed;
-                playerSpriteImgNum++;
-                if(playerSpriteImgNum < 4 || playerSpriteImgNum > 8){
-                    playerSpriteImgNum = 4;
+                if(playerDyPos < 0 - playerDheight){// wrap to bottom of screen
+                    playerDyPos = canvas.height - playerDheight;
                 }
             }
-            if (leftKeyPressed == true) {
+            if (rightKeyPressed) {
+                playerDxPos += playerXspeed;
+                playerSpriteImgNum += animationRate;
+                if (playerSpriteImgNum < 4 || playerSpriteImgNum > 8) {
+                    playerSpriteImgNum = 4;
+                }
+                if(playerDxPos > canvas.width - playerDwidth){// wrap to left of screen
+                    playerDxPos = 0 - playerDwidth;
+                }
+            }
+            if (leftKeyPressed) {
                 playerDxPos -= playerXspeed;
-                playerSpriteImgNum++;
-                if(playerSpriteImgNum < 8 || playerSpriteImgNum > 11){
+                playerSpriteImgNum += animationRate;
+                if (playerSpriteImgNum < 8 || playerSpriteImgNum > 11) {
                     playerSpriteImgNum = 8;
+                }
+                if(playerDxPos < 0 - playerDwidth){// wrap to right of screen
+                    playerDxPos = canvas.width - playerDwidth;
                 }
             }
         }
