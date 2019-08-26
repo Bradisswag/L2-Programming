@@ -19,7 +19,35 @@
 
         //Global Variables
         
+        //Player SpriteSheet Vairables
+        var playerSxPos = 0;
+        var playerSyPos = 0;
+        const PLAYER_S_WIDTH = 37;
+        const PLAYER_S_HEIGHT = 49;
+        var playerDxPos = 0;
+        var playerDyPos = 0;
+        var playerDwidth = 40;
+        var playerDheight = 45;
         
+        var playerSpritesheetXY = [];
+        var playerImgTotal = 16;
+        var rowCount = 0;
+        
+        //Player Variables
+        var playerXpos = 0;
+        var playerYpos = 0;
+        var playerSize = 20;
+        var playerXspeed = 5;
+        var playerYspeed = 5;
+        
+        const LEFT_KEY = 37;
+        const UP_KEY = 38;
+        const RIGHT_KEY = 39;
+        const DOWN_KEY = 40;
+        var leftKeyPressed = false;
+        var upKeyPressed = false;
+        var rightKeyPressed = false;
+        var downKeyPressed = false;
         
         
         
@@ -28,11 +56,18 @@
         playerImg.src = 'images/player.png';
         
         
-
-        
         function mainloop() { // loop runs code 50 times per second
+            colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
 
+            drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
+            playerMove()
         }
 
+        
+        function colorRect(x, y, w, h, c) {
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
+        }
+        
     </script>
 </body>
