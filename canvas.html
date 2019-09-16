@@ -39,6 +39,9 @@
         var playerSize = 20;
         var playerXspeed = 5;
         var playerYspeed = 5;
+        
+        var playerWidth = 40;
+        var playerHeight = 45;
 
         const LEFT_KEY = 37;
         const UP_KEY = 38;
@@ -53,20 +56,24 @@
 
         // player image import/ source
         var playerImg = new Image();
-        playerImg.src = 'images/player.jpg';
+        playerImg.src = 'images/player.png';
 
 
         function mainloop() { // loop runs code 50 times per second
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
 
             drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
-            playerMove()
+            
         }
 
 
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
+        }
+        
+        function drawImg(img, sx, sy, sw, sh, x, y, w, h) {
+            canvasContext.drawImage(img, sx, sy, sw, sh, x, y, w, h);
         }
 
     </script>
