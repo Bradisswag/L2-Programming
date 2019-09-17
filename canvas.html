@@ -13,6 +13,8 @@
         window.onload = function() {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
+            //document.addEventListener('keyleft', leftKeyPressed);
+            //document.addEventListener('keyright', rightKeyPressed);
 
             setInterval(mainloop, 1000 / 50);
         }
@@ -36,21 +38,19 @@
         //Player Variables
         var playerXpos = 0;
         var playerYpos = 0;
+        var playerWidth = 60;
+        var playerHeight = 70;
+        
         var playerSize = 20;
         var playerXspeed = 5;
         var playerYspeed = 5;
-        
-        var playerWidth = 40;
-        var playerHeight = 45;
 
         const LEFT_KEY = 37;
         const UP_KEY = 38;
         const RIGHT_KEY = 39;
         const DOWN_KEY = 40;
         var leftKeyPressed = false;
-        var upKeyPressed = false;
         var rightKeyPressed = false;
-        var downKeyPressed = false;
 
 
 
@@ -62,14 +62,27 @@
         function mainloop() { // loop runs code 50 times per second
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
 
-            drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
+            drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player
+            
+            //drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
             
         }
 
 
-        function colorRect(x, y, w, h, c) {
+
+        function colorRect(x, y, w, h, c) { // color
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
+        }
+        
+        function drawSprite(src, x, y, w, h) { // draw sprite
+            canvasContext.drawImage(src, x, y, w, h);
+        }
+
+        function drawText(x, y, color, msg, sizeStyle) { // text
+            canvasContext.fillStyle = color;
+            canvasContext.fillText(msg, x, y);
+            canvasContext.font = sizeStyle;
         }
         
         function drawImg(img, sx, sy, sw, sh, x, y, w, h) {
