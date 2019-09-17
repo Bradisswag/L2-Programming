@@ -40,7 +40,7 @@
         var playerYpos = 0;
         var playerWidth = 60;
         var playerHeight = 70;
-        
+
         var playerSize = 20;
         var playerXspeed = 5;
         var playerYspeed = 5;
@@ -63,9 +63,9 @@
             colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
 
             drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player
-            
+
             //drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
-            
+
         }
 
 
@@ -74,7 +74,7 @@
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
         }
-        
+
         function drawSprite(src, x, y, w, h) { // draw sprite
             canvasContext.drawImage(src, x, y, w, h);
         }
@@ -84,7 +84,7 @@
             canvasContext.fillText(msg, x, y);
             canvasContext.font = sizeStyle;
         }
-        
+
         function drawImg(img, sx, sy, sw, sh, x, y, w, h) {
             canvasContext.drawImage(img, sx, sy, sw, sh, x, y, w, h);
         }
