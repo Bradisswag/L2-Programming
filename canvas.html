@@ -20,6 +20,9 @@
         }
 
         //Global Variables
+        
+        //Game
+        var gameRun = false;
 
         //Player SpriteSheet Vairables
         var playerSxPos = 0;
@@ -60,12 +63,31 @@
 
 
         function mainloop() { // loop runs code 50 times per second
-            colorRect(0, 0, canvas.width, canvas.height, 'black'); //bg
 
             drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player
 
             //drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
+            
+            if (gameRun == true) {
+                if (isThereAUsername == false) { //Gets Username
+                    username = prompt('Please enter your username.');
+                    isThereAUsername = true;
+                }
+                if (username == '') {
+                    username = 'Unknown';
+                }
+                colorRect(0, 0, canvas.width, canvas.height, 'black') // canvas
 
+                drawSprite(img.background, 0, 0, canvas.width, canvas.height) // canvas background
+
+                drawSprite(img.player, PlayerXPos, PlayerYPos, PlayerWidth, PlayerHeight); // Player (Spongebob)         
+
+                drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish 
+
+
+                canvasContext.font = "20px Arial"; //Timer text
+                canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2) , 390, 20); //Timer text
+            }
         }
 
 
