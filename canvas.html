@@ -13,16 +13,20 @@
         window.onload = function() {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
-            //document.addEventListener('keyleft', leftKeyPressed);
-            //document.addEventListener('keyright', rightKeyPressed);
+            document.addEventListener('keydown', keyPressed);
+            document.addEventListener('keyup', keyReleased);
 
             setInterval(mainloop, 1000 / 50);
         }
 
         //Global Variables
-        
+
         //Game
         var gameRun = false;
+        var isThereAUsername = false;
+        var leftArrowKeyPressed = false
+        var rightArrowKeyPressed = false
+        var spacebarPressed = false
 
         //Player SpriteSheet Vairables
         var playerSxPos = 0;
@@ -45,8 +49,8 @@
         var playerHeight = 70;
 
         var playerSize = 20;
-        var playerXspeed = 5;
-        var playerYspeed = 5;
+        var playerXspeed = 10;
+        var playerYspeed = 10;
 
         const LEFT_KEY = 37;
         const UP_KEY = 38;
@@ -62,54 +66,99 @@
         playerImg.src = 'images/player.png';
 
 
-        function mainloop() { // loop runs code 50 times per second
-
-            drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player
+        function mainloop() { // loop
 
             //drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
-            
-            if (gameRun == true) {
+
+            if (gameRun == false) {
                 if (isThereAUsername == false) { //Gets Username
+                    username = prompt('Please enter your username.');
+                    isThereAUsername = true;
+                    gameRun = true;
+                }
+                if (username == '') {
+                    username = prompt('Please enter a correct username.');
+                    isThereAUsername = true;
+                    gameRun = true;
+                }
+            }
+            if (gameRun == true) {
+                if (isThereAUsername == false) {
                     username = prompt('Please enter your username.');
                     isThereAUsername = true;
                 }
                 if (username == '') {
-                    username = 'Unknown';
+                    username = prompt('Please enter a correct username.');
+                    isThereAUsername = true;
                 }
-                colorRect(0, 0, canvas.width, canvas.height, 'black') // canvas
-
-                drawSprite(img.background, 0, 0, canvas.width, canvas.height) // canvas background
-
-                drawSprite(img.player, PlayerXPos, PlayerYPos, PlayerWidth, PlayerHeight); // Player (Spongebob)         
-
-                drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish 
 
 
-                canvasContext.font = "20px Arial"; //Timer text
-                canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2) , 390, 20); //Timer text
+                //drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish 
+                colorRect(0, 0, canvas.width, canvas.height, 'black'); // canvas
+                drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player (Spongebob)         
+
+
+                //canvasContext.font = "20px Arial"; //Timer text
+                //canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2), 390, 20); //Timer text
+                gameRun = true;
+                playerMove();
             }
         }
 
 
-
-        function colorRect(x, y, w, h, c) { // color
-            canvasContext.fillStyle = c;
-            canvasContext.fillRect(x, y, w, h);
+        function playerMove() {
+            if (leftArrowKeyPressed == true) {
+                playerXpos -= playerXspeed;
+                console.log("leftkeypressed");
+            }
+            if (rightArrowKeyPressed == true) {
+                playerXpos += playerXspeed;
+                console.log("rightkeypressed");
+            }
+            
         }
 
-        function drawSprite(src, x, y, w, h) { // draw sprite
-            canvasContext.drawImage(src, x, y, w, h);
+        function keyPressed(evt) { // keys pressed
+            if (evt.keyCode == LEFT_KEY) { //< Left key
+                leftArrowKeyPressed = true;
+            }
+            if (evt.keyCode == RIGHT_KEY) { //> Right key
+                rightArrowKeyPressed = true;
+            }
+            //            if (evt.keyCode == 32) { //  Space key
+            //                spacebarPressed = true;
+            //            }
         }
 
-        function drawText(x, y, color, msg, sizeStyle) { // text
-            canvasContext.fillStyle = color;
-            canvasContext.fillText(msg, x, y);
-            canvasContext.font = sizeStyle;
-        }
+        function keyReleased(evt) { // keys released
+            if (evt.keyCode == LEFT_KEY) { //< Left key
+                leftArrowKeyPressed = false;
+            }
+            if (evt.keyCode == RIGHT_KEY) { //> Right key
+                rightArrowKeyPressed = false;
+            }
+            //            if (evt.keyCode == 32) { //  Space key
+            //                spacebarPressed = false;
+            }
 
-        function drawImg(img, sx, sy, sw, sh, x, y, w, h) {
-            canvasContext.drawImage(img, sx, sy, sw, sh, x, y, w, h);
-        }
+            function colorRect(x, y, w, h, c) { // color
+                canvasContext.fillStyle = c;
+                canvasContext.fillRect(x, y, w, h);
+            }
+
+            function drawSprite(src, x, y, w, h) { // draw sprite
+                canvasContext.drawImage(src, x, y, w, h);
+            }
+
+            function drawText(x, y, color, msg, sizeStyle) { // text
+                canvasContext.fillStyle = color;
+                canvasContext.fillText(msg, x, y);
+                canvasContext.font = sizeStyle;
+            }
+
+            function drawImg(img, sx, sy, sw, sh, x, y, w, h) {
+                canvasContext.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+            }
 
     </script>
 </body>
