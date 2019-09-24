@@ -13,14 +13,16 @@
         window.onload = function() {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
-            document.addEventListener('keydown', keyPressed);
-            document.addEventListener('keyup', keyReleased);
+            document.addEventListener('keydown', keyPressed); // Key event
+            document.addEventListener('keyup', keyReleased); // Key event
 
             setInterval(mainloop, 1000 / 50);
         }
 
         //Global Variables
 
+        //Canvas settings
+        
         //Game
         var gameRun = false;
         var isThereAUsername = false;
@@ -43,8 +45,8 @@
         var rowCount = 0;
 
         //Player Variables
-        var playerXpos = 0;
-        var playerYpos = 0;
+        var playerXpos = 400 / 2 - (60 / 2);
+        var playerYpos = 400 - 70;
         var playerWidth = 60;
         var playerHeight = 70;
 
@@ -52,10 +54,10 @@
         var playerXspeed = 10;
         var playerYspeed = 10;
 
-        const LEFT_KEY = 37;
-        const UP_KEY = 38;
-        const RIGHT_KEY = 39;
-        const DOWN_KEY = 40;
+        var LEFT_KEY = 37;
+        var UP_KEY = 38;
+        var RIGHT_KEY = 39;
+        var DOWN_KEY = 40;
         var leftKeyPressed = false;
         var rightKeyPressed = false;
 
@@ -71,23 +73,23 @@
             //drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
 
             if (gameRun == false) {
-                if (isThereAUsername == false) { //Gets Username
+                if (isThereAUsername == false) { // Gets username if no username
                     username = prompt('Please enter your username.');
                     isThereAUsername = true;
                     gameRun = true;
                 }
-                if (username == '') {
+                if (username == '') { // Gets username if username not submitted properly
                     username = prompt('Please enter a correct username.');
                     isThereAUsername = true;
                     gameRun = true;
                 }
             }
             if (gameRun == true) {
-                if (isThereAUsername == false) {
+                if (isThereAUsername == false) { // Gets username if no username
                     username = prompt('Please enter your username.');
                     isThereAUsername = true;
                 }
-                if (username == '') {
+                if (username == '') { // Gets username if username not submitted properly
                     username = prompt('Please enter a correct username.');
                     isThereAUsername = true;
                 }
@@ -102,22 +104,36 @@
                 //canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2), 390, 20); //Timer text
                 gameRun = true;
                 playerMove();
+                playerBoundary();
             }
         }
 
 
         function playerMove() {
-            if (leftArrowKeyPressed == true) {
+            if (leftArrowKeyPressed == true) { // Left key movement
                 playerXpos -= playerXspeed;
                 console.log("leftkeypressed");
             }
-            if (rightArrowKeyPressed == true) {
+            if (rightArrowKeyPressed == true) { // Right key movement
                 playerXpos += playerXspeed;
                 console.log("rightkeypressed");
             }
             
         }
 
+        function playerBoundary() {
+            if (playerXpos > canvas.width - playerWidth) { // Right side edge
+                playerXpos = canvas.width - playerWidth;
+            }
+            if (playerXpos < 0) { // Left side edge
+                playerXpos = 0;
+            }
+            
+            if (playerYpos > canvas.height + playerHeight) { // Bottom edge (Saftey in case player exits through bottom of screen somehow?)
+                playerYpos = canvas.height - playerHeight;
+            }
+        }
+        
         function keyPressed(evt) { // keys pressed
             if (evt.keyCode == LEFT_KEY) { //< Left key
                 leftArrowKeyPressed = true;
@@ -156,7 +172,7 @@
                 canvasContext.font = sizeStyle;
             }
 
-            function drawImg(img, sx, sy, sw, sh, x, y, w, h) {
+            function drawImg(img, sx, sy, sw, sh, x, y, w, h) { // Img
                 canvasContext.drawImage(img, sx, sy, sw, sh, x, y, w, h);
             }
 
