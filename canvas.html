@@ -1,5 +1,5 @@
 <!doctype html>
-
+<html>
 <head>
     <title>Flying Pigs</title>
 </head>
@@ -29,6 +29,8 @@
         var leftArrowKeyPressed = false
         var rightArrowKeyPressed = false
         var spacebarPressed = false
+        var timer = 0;
+        var timerSeconds = 0;
 
         //Player SpriteSheet Vairables
         var playerSxPos = 0;
@@ -112,9 +114,14 @@
                 //colorRect(0, 0, canvas.width, canvas.height, 'black'); // canvas
                 drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player (Spongebob)         
 
+                //Timer:
+                canvasContext.font = "20px Arial"; //Timer text
+                canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2) , canvas.width / 1.4, 20); //Timer text
 
-                //canvasContext.font = "20px Arial"; //Timer text
-                //canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2), 390, 20); //Timer text
+                if (gameRun == true) { //Timer
+                    timer++;
+                    timerSeconds = timer / 50;
+                }
                 playerMove();
                 playerBoundary();
                 jellyfishRender();
@@ -197,3 +204,4 @@
 
     </script>
 </body>
+</html>
