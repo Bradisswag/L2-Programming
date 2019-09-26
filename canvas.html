@@ -61,11 +61,27 @@
         var leftKeyPressed = false;
         var rightKeyPressed = false;
 
+        //Jellyfish
+        var jellyfishWidth = 0;
+        var jellyfishHeight = 0;
+        
+        //Random Objects
+        var jellyXpos = 0;
+        var jellyYpos = 0;
+        var jellyYspeed = 0;
+        var jellyXspeed = 0;
+        var jellyWidth = 40;
+        var jellyHeight = 50;
 
+        var jellyArray = [];
+        var jellyCount = 0;
 
         // player image import/ source
         var playerImg = new Image();
         playerImg.src = 'images/player.png';
+        
+        var jellyfishImg = new Image();
+        jellyfishImg.src = 'images/singlejellyfish.png';
 
 
         function mainloop() { // loop
@@ -85,15 +101,6 @@
                 }
             }
             if (gameRun == true) {
-                if (isThereAUsername == false) { // Gets username if no username
-                    username = prompt('Please enter your username.');
-                    isThereAUsername = true;
-                }
-                if (username == '') { // Gets username if username not submitted properly
-                    username = prompt('Please enter a correct username.');
-                    isThereAUsername = true;
-                }
-
 
                 //drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish 
                 colorRect(0, 0, canvas.width, canvas.height, 'black'); // canvas
@@ -102,9 +109,9 @@
 
                 //canvasContext.font = "20px Arial"; //Timer text
                 //canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2), 390, 20); //Timer text
-                gameRun = true;
                 playerMove();
                 playerBoundary();
+                jellyfishRender();
             }
         }
 
@@ -121,6 +128,12 @@
             
         }
 
+        function jellyfishRender() {
+            jellyArray.forEach(function(jelly, index) {
+                drawSprite(jellyfishImg, jelly.jellyXpos, jelly.jellyYpos, jelly.jellyWidth, jelly.jellyHeight); // jellyfish
+            });
+        }
+        
         function playerBoundary() {
             if (playerXpos > canvas.width - playerWidth) { // Right side edge
                 playerXpos = canvas.width - playerWidth;
