@@ -82,6 +82,9 @@
         
         var jellyfishImg = new Image();
         jellyfishImg.src = 'images/singlejellyfish.png';
+        
+        var backgroundImg = new Image();
+        backgroundImg.src = 'images/background.png';
 
 
         function mainloop() { // loop
@@ -89,6 +92,7 @@
             //drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
 
             if (gameRun == false) {
+                drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
                 if (isThereAUsername == false) { // Gets username if no username
                     username = prompt('Please enter your username.');
                     isThereAUsername = true;
@@ -102,8 +106,10 @@
             }
             if (gameRun == true) {
 
+                drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
+                
                 //drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish 
-                colorRect(0, 0, canvas.width, canvas.height, 'black'); // canvas
+                //colorRect(0, 0, canvas.width, canvas.height, 'black'); // canvas
                 drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player (Spongebob)         
 
 
