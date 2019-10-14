@@ -19,8 +19,6 @@
             setInterval(mainloop, 1000 / 50);
         }
 
-        //Global Variables
-
         //Canvas settings
 
         //Game
@@ -31,6 +29,7 @@
         var spacebarPressed = false
         var timer = 0;
         var timerSeconds = 0;
+        var difficulty = 0;
 
         //Player SpriteSheet Vairables
         var playerSxPos = 0;
@@ -78,34 +77,18 @@
         var jellyArray = [];
         var jellyCount = 0;
 
-        // player image import/ source
-        var playerImg = new Image();
-        playerImg.src = 'images/player.png';
-
-        var jellyfishImg = new Image();
-        jellyfishImg.src = 'images/singlejellyfish.png';
-
-        var backgroundImg = new Image();
-        backgroundImg.src = 'images/background.png';
-
-
         function mainloop() { // loop
 
-            if (gameRun == false) {
-                drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
+            if (gameRun == true) {
+
                 if (isThereAUsername == false) { // Gets username if no username
                     username = prompt('Please enter your username.');
                     isThereAUsername = true;
-                    gameRun = true;
                 }
                 if (username == '') { // Gets username if username not submitted properly
                     username = prompt('Please enter a correct username.');
                     isThereAUsername = true;
-                    gameRun = true;
                 }
-            }
-            if (gameRun == true) {
-
                 drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
 
                 //drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish 
@@ -122,9 +105,35 @@
                 playerMove(); //Player Movement
                 playerBoundary(); //Player boundarys
                 jellyRender(); //Jellyfish render
+            } else if (gameRun == false) {
+                drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
+                //var difficulty = prompt('Choose what difficulty you would like.', 'Easy, Medium, Hard')
+                if (difficulty == 0) { // selects difficulty
+                    difficultySetting();
+                }
             }
         }
 
+        function difficultySetting() {
+            difficulty = prompt('Please select your difficulty, 1= Easy, 2=Medium, 3=Hard.','1, 2, or 3');
+            jellyCount = difficulty * 4; // creates the jellys
+            GameRun = true // starts game
+            console.log('Jellyfish:' + jellyCount) // outputs how many jellyfish are created in console
+            console.log('Gamemode:' + difficulty) // outputs difficulty in console
+
+            for (i = 0; i <= jellyCount; i++) { // jelly array
+                jellyArray.push(randomJelly());
+            }
+        }
+
+        var playerImg = new Image();
+        playerImg.src = 'images/player.png';
+
+        var jellyfishImg = new Image();
+        jellyfishImg.src = 'images/singlejellyfish.png';
+
+        var backgroundImg = new Image();
+        backgroundImg.src = 'images/background.png';
 
         function playerMove() {
             if (leftArrowKeyPressed == true) { // Left key movement
@@ -140,20 +149,20 @@
 
         function jellyRender() {
             jellyArray.forEach(function(jelly, index) {
-                drawSprite(jellyfishImg, jelly.brickXpos, jelly.brickYpos, jelly.brickWidth, jelly.brickHeight); // jellyfish
+                drawSprite(jellyfishImg, jelly.jellyXpos, jelly.jellyYpos, jelly.jellyWidth, jelly.jellyHeight); // jellyfish
             });
         }
 
-        function randJelly() {
+        function randomJelly() {
             jellyWidth = jellyfishWidth;
             jellyHeight = jellyfishHeight;
             var randJelly = {
                 jellyWidth: jellyWidth,
                 jellyHeight: jellyHeight,
-                jellyXpos: Math.floor(math.random() * ((canvas.width - jelly.width))),
+                jellyXpos: 0, //Math.floor(math.random() * ((canvas.width - jellyWidth))),
                 jellyYpos: 0,
-                jellyXspeed: Math.floor(math.random() * (10 - 1) + 1),
-                jellyYspeed: Math.floor(math.random() * (10 - 1) + 1)
+                jellyXspeed: 0, //Math.floor(math.random() * (10 - 1) + 1),
+                jellyYspeed: 0, // Math.floor(math.random() * (10 - 1) + 1)
             }
             return randJelly;
         }
