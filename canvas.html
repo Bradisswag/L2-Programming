@@ -22,7 +22,7 @@
         //Global Variables
 
         //Canvas settings
-        
+
         //Game
         var gameRun = false;
         var isThereAUsername = false;
@@ -64,16 +64,16 @@
         var rightKeyPressed = false;
 
         //Jellyfish
-        var jellyfishWidth = 0;
-        var jellyfishHeight = 0;
-        
-        //Random Objects
+        var jellyfishWidth = 40;
+        var jellyfishHeight = 50;
+
+        //Random jellys
         var jellyXpos = 0;
         var jellyYpos = 0;
         var jellyYspeed = 0;
         var jellyXspeed = 0;
-        var jellyWidth = 40;
-        var jellyHeight = 50;
+        var jellyWidth = 0;
+        var jellyHeight = 0;
 
         var jellyArray = [];
         var jellyCount = 0;
@@ -81,17 +81,15 @@
         // player image import/ source
         var playerImg = new Image();
         playerImg.src = 'images/player.png';
-        
+
         var jellyfishImg = new Image();
         jellyfishImg.src = 'images/singlejellyfish.png';
-        
+
         var backgroundImg = new Image();
         backgroundImg.src = 'images/background.png';
 
 
         function mainloop() { // loop
-
-            //drawImg(playerImg, playerSxPos, playerSyPos, PLAYER_S_WIDTH, PLAYER_S_HEIGHT, playerDxPos, playerDyPos, playerDwidth, playerDheight)
 
             if (gameRun == false) {
                 drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
@@ -109,22 +107,21 @@
             if (gameRun == true) {
 
                 drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
-                
+
                 //drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish 
-                //colorRect(0, 0, canvas.width, canvas.height, 'black'); // canvas
                 drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player (Spongebob)         
 
                 //Timer:
                 canvasContext.font = "20px Arial"; //Timer text
-                canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2) , canvas.width / 1.4, 20); //Timer text
+                canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2), canvas.width / 1.4, 20); //Timer text
 
                 if (gameRun == true) { //Timer
                     timer++;
                     timerSeconds = timer / 50;
                 }
-                playerMove();
-                playerBoundary();
-                jellyfishRender();
+                playerMove(); //Player Movement
+                playerBoundary(); //Player boundarys
+                jellyRender(); //Jellyfish render
             }
         }
 
@@ -138,15 +135,61 @@
                 playerXpos += playerXspeed;
                 console.log("rightkeypressed");
             }
-            
+
         }
 
-        function jellyfishRender() {
+        function jellyRender() {
             jellyArray.forEach(function(jelly, index) {
-                drawSprite(jellyfishImg, jelly.jellyXpos, jelly.jellyYpos, jelly.jellyWidth, jelly.jellyHeight); // jellyfish
+                drawSprite(jellyfishImg, jelly.brickXpos, jelly.brickYpos, jelly.brickWidth, jelly.brickHeight); // jellyfish
             });
         }
-        
+
+        function randJelly() {
+            jellyWidth = jellyfishWidth;
+            jellyHeight = jellyfishHeight;
+            var randJelly = {
+                jellyWidth: jellyWidth,
+                jellyHeight: jellyHeight,
+                jellyXpos: Math.floor(math.random() * ((canvas.width - jelly.width))),
+                jellyYpos: 0,
+                jellyXspeed: Math.floor(math.random() * (10 - 1) + 1),
+                jellyYspeed: Math.floor(math.random() * (10 - 1) + 1)
+            }
+            return randJelly;
+        }
+
+        function jellyMovement() { // The movement of the jellys / jellyfish
+            jellyArray.forEach(function(jellys, index) {
+                jellys.jellyXpos += jellys.jellyXspeed
+                jellys.jellyYpos += jellys.jellyYspeed
+
+
+            })
+        }
+
+        //        function brickMovement() { // the movement for the bricks / meteors
+        //            brickArray.forEach(function(bricks, index) {
+        //
+        //                bricks.brickXpos += bricks.brickXspeed
+        //                bricks.brickYpos += bricks.brickYspeed
+        //
+        //                if (bricks.brickXpos > canvas.width - bricks.brickWidth) {
+        //                    bricks.brickXspeed *= -1;
+        //                }
+        //                if (bricks.brickXpos < 0) {
+        //                    bricks.brickXspeed *= -1;
+        //                }
+        //                if (bricks.brickYpos > canvas.height - bricks.brickHeight) {
+        //                    bricks.brickYpos = 0 - bricks.brickHeight;
+        //                }
+        //                if (bricks.brickXpos + bricks.brickWidth > PlayerXPos && bricks.brickXpos < PlayerXPos + PlayerWidth && bricks.brickYpos + bricks.brickHeight > PlayerYPos && bricks.brickYpos < PlayerYPos + PlayerHeight) { // collision 
+        //                    console.log('You got hit!');
+        //                    bricks.brickYpos = canvas.height + bricks.brickHeight;
+        //                    fuelAmount = fuelAmount - 25;
+        //                }
+        //            });
+        //        }
+
         function playerBoundary() {
             if (playerXpos > canvas.width - playerWidth) { // Right side edge
                 playerXpos = canvas.width - playerWidth;
@@ -154,12 +197,12 @@
             if (playerXpos < 0) { // Left side edge
                 playerXpos = 0;
             }
-            
+
             if (playerYpos > canvas.height + playerHeight) { // Bottom edge (Saftey in case player exits through bottom of screen somehow?)
                 playerYpos = canvas.height - playerHeight;
             }
         }
-        
+
         function keyPressed(evt) { // keys pressed
             if (evt.keyCode == LEFT_KEY) { //< Left key
                 leftArrowKeyPressed = true;
@@ -181,27 +224,25 @@
             }
             //            if (evt.keyCode == 32) { //  Space key
             //                spacebarPressed = false;
-            }
+        }
 
-            function colorRect(x, y, w, h, c) { // color
-                canvasContext.fillStyle = c;
-                canvasContext.fillRect(x, y, w, h);
-            }
+        function colorRect(x, y, w, h, c) { // color
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
+        }
 
-            function drawSprite(src, x, y, w, h) { // draw sprite
-                canvasContext.drawImage(src, x, y, w, h);
-            }
+        function drawSprite(src, x, y, w, h) { // draw sprite
+            canvasContext.drawImage(src, x, y, w, h);
+        }
 
-            function drawText(x, y, color, msg, sizeStyle) { // text
-                canvasContext.fillStyle = color;
-                canvasContext.fillText(msg, x, y);
-                canvasContext.font = sizeStyle;
-            }
+        function drawText(x, y, color, msg, sizeStyle) { // text
+            canvasContext.fillStyle = color;
+            canvasContext.fillText(msg, x, y);
+            canvasContext.font = sizeStyle;
+        }
 
-            function drawImg(img, sx, sy, sw, sh, x, y, w, h) { // Img
-                canvasContext.drawImage(img, sx, sy, sw, sh, x, y, w, h);
-            }
-
+        function drawImg(img, sx, sy, sw, sh, x, y, w, h) { // Img
+            canvasContext.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+        }
     </script>
-</body>
-</html>
+</body></html>
