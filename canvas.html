@@ -105,6 +105,7 @@
                 playerMove(); //Player Movement
                 playerBoundary(); //Player boundarys
                 jellyRender(); //Jellyfish render
+                jellyMovement();
             } else if (gameRun == false) {
                 drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
                 //var difficulty = prompt('Choose what difficulty you would like.', 'Easy, Medium, Hard')
@@ -115,9 +116,10 @@
         }
 
         function difficultySetting() {
-            difficulty = prompt('Please select your difficulty, 1= Easy, 2=Medium, 3=Hard.','1, 2, or 3');
+            difficulty = prompt('Please select your difficulty, 1= Easy, 2=Medium, 3=Hard.', '1, 2, or 3');
             jellyCount = difficulty * 4; // creates the jellys
-            GameRun = true // starts game
+            gameRun = true // starts game
+            console.log(gameRun)
             console.log('Jellyfish:' + jellyCount) // outputs how many jellyfish are created in console
             console.log('Gamemode:' + difficulty) // outputs difficulty in console
 
@@ -159,45 +161,36 @@
             var randJelly = {
                 jellyWidth: jellyWidth,
                 jellyHeight: jellyHeight,
-                jellyXpos: 0, //Math.floor(math.random() * ((canvas.width - jellyWidth))),
+                jellyXpos: Math.floor(Math.random() * ((canvas.width - jellyWidth))),
                 jellyYpos: 0,
-                jellyXspeed: 0, //Math.floor(math.random() * (10 - 1) + 1),
-                jellyYspeed: 0, // Math.floor(math.random() * (10 - 1) + 1)
+                jellyXspeed: Math.floor(Math.random() * (10 - 1) + 1),
+                jellyYspeed: Math.floor(Math.random() * (10 - 1) + 1)
             }
             return randJelly;
         }
 
-        function jellyMovement() { // The movement of the jellys / jellyfish
-            jellyArray.forEach(function(jellys, index) {
-                jellys.jellyXpos += jellys.jellyXspeed
-                jellys.jellyYpos += jellys.jellyYspeed
+        function jellyMovement() { // the movement for the jelly / jellyfish
+            jellyArray.forEach(function(jelly, index) {
 
+                jelly.jellyXpos += jelly.jellyXspeed
+                jelly.jellyYpos += jelly.jellyYspeed
 
-            })
+                if (jelly.jellyXpos > canvas.width - jelly.jellyWidth) {
+                    jelly.jellyXspeed *= -1;
+                }
+                if (jelly.jellyXpos < 0) {
+                    jelly.jellyXspeed *= -1;
+                }
+                if (jelly.jellyYpos > canvas.height - jelly.jellyHeight) {
+                    jelly.jellyYpos = 0 - jelly.jellyHeight;
+                }
+                if (jelly.jellyXpos + jelly.jellyWidth > playerXpos && jelly.jellyXpos < playerXpos + playerWidth && jelly.jellyYpos + jelly.jellyHeight > playerYpos && jelly.jellyYpos < playerYpos + playerHeight) { // collision 
+                    console.log('You got hit!');
+                    jelly.jellyYpos = canvas.height + jelly.jellyHeight;
+                    lives = lives - 1;
+                }
+            });
         }
-
-        //        function brickMovement() { // the movement for the bricks / meteors
-        //            brickArray.forEach(function(bricks, index) {
-        //
-        //                bricks.brickXpos += bricks.brickXspeed
-        //                bricks.brickYpos += bricks.brickYspeed
-        //
-        //                if (bricks.brickXpos > canvas.width - bricks.brickWidth) {
-        //                    bricks.brickXspeed *= -1;
-        //                }
-        //                if (bricks.brickXpos < 0) {
-        //                    bricks.brickXspeed *= -1;
-        //                }
-        //                if (bricks.brickYpos > canvas.height - bricks.brickHeight) {
-        //                    bricks.brickYpos = 0 - bricks.brickHeight;
-        //                }
-        //                if (bricks.brickXpos + bricks.brickWidth > PlayerXPos && bricks.brickXpos < PlayerXPos + PlayerWidth && bricks.brickYpos + bricks.brickHeight > PlayerYPos && bricks.brickYpos < PlayerYPos + PlayerHeight) { // collision 
-        //                    console.log('You got hit!');
-        //                    bricks.brickYpos = canvas.height + bricks.brickHeight;
-        //                    fuelAmount = fuelAmount - 25;
-        //                }
-        //            });
-        //        }
 
         function playerBoundary() {
             if (playerXpos > canvas.width - playerWidth) { // Right side edge
