@@ -91,7 +91,8 @@
                 }
                 drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
 
-                //drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish 
+                //drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish test
+                //drawSprite(playerImg, canvas.width / 2 - playerWidth / 2, canvas.height - playerHeight, playerWidth, playerHeight); // Player (Spongebob)         
                 drawSprite(playerImg, playerXpos, playerYpos, playerWidth, playerHeight); // Player (Spongebob)         
 
                 //Timer:
@@ -116,7 +117,12 @@
         }
 
         function difficultySetting() {
-            difficulty = prompt('Please select your difficulty, 1= Easy, 2=Medium, 3=Hard.', '1, 2, or 3');
+            if (difficulty == 0) {
+                difficulty = prompt('Please select your difficulty, 1= Easy, 2=Medium, 3=Hard.', '1, 2, or 3');
+            }
+            if(difficulty != '1', '2', '3') {
+                    
+            }
             jellyCount = difficulty * 3; // creates the jellys
             gameRun = true // starts game
             console.log(gameRun)
