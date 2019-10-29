@@ -30,6 +30,7 @@
         var timer = 0;
         var timerSeconds = 0;
         var difficulty = 0;
+        var difficultyIsSet = false;
 
         //Player SpriteSheet Vairables
         var playerSxPos = 0;
@@ -113,18 +114,20 @@
                 if (difficulty == 0) { // selects difficulty
                     difficultySetting();
                 }
+                if (difficultyIsSet == true) {
+                    gameRun = true // starts game
+                }
             }
         }
 
         function difficultySetting() {
-            if (difficulty == 0) {
-                difficulty = prompt('Please select your difficulty, 1= Easy, 2=Medium, 3=Hard.', '1, 2, or 3');
-            }
-            if(difficulty != '1', '2', '3') {
-                    
-            }
+            drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', 'Please choose your difficulty', '25px Arial'); //text
+            drawText(canvas.width / 2 / 3, canvas.height / 2 + 30, 'white', 'Use the number keys(1, 2, 3)', '20px Arial'); //text
+            drawText(canvas.width / 3, canvas.height / 2 + 60, 'red', '1 = Easy', '30px Arial'); //text
+            drawText(canvas.width / 3, canvas.height / 2 + 90, 'red', '2 = Medium', '30px Arial'); //text
+            drawText(canvas.width / 3, canvas.height / 2 + 120, 'red', '3 = Hard', '30px Arial'); //text
             jellyCount = difficulty * 3; // creates the jellys
-            gameRun = true // starts game
+            difficultyIsSet = true;
             console.log(gameRun)
             console.log('Jellyfish:' + jellyCount) // outputs how many jellyfish are created in console
             console.log('Gamemode:' + difficulty) // outputs difficulty in console
@@ -221,6 +224,18 @@
             //            if (evt.keyCode == 32) { //  Space key
             //                spacebarPressed = true;
             //            }
+            if (evt.keyCode == 49) { //1
+                oneKeyPressed = true;
+                difficulty = 1;
+            }
+            if (evt.keyCode == 50) { //2
+                twoKeyPressed = true;
+                difficulty = 2;
+            }
+            if (evt.keyCode == 51) { //3
+                threeKeyPressed = true;
+                difficulty = 3;
+            }
         }
 
         function keyReleased(evt) { // keys released
@@ -232,6 +247,15 @@
             }
             //            if (evt.keyCode == 32) { //  Space key
             //                spacebarPressed = false;
+            if (evt.keyCode == 49) { //1
+                oneKeyPressed = false;
+            }
+            if (evt.keyCode == 50) { //2
+                twoKeyPressed = false;
+            }
+            if (evt.keyCode == 51) { //3
+                threeKeyPressed = false;
+            }
         }
 
         function colorRect(x, y, w, h, c) { // color
@@ -245,8 +269,8 @@
 
         function drawText(x, y, color, msg, sizeStyle) { // text
             canvasContext.fillStyle = color;
-            canvasContext.fillText(msg, x, y);
             canvasContext.font = sizeStyle;
+            canvasContext.fillText(msg, x, y);
         }
 
         function drawImg(img, sx, sy, sw, sh, x, y, w, h) { // Img
