@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <title>Jellyfish Run</title>
 </head>
@@ -30,7 +31,12 @@
         var timer = 0;
         var timerSeconds = 0;
         var difficulty = 0;
-        var difficultyIsSet = false;
+        var oneKeyPressed = false;
+        var twoKeyPressed = false;
+        var threeKeyPressed = false;
+        var lives = 1;
+        var winner = false;
+        var loser = false;
 
         //Player SpriteSheet Vairables
         var playerSxPos = 0;
@@ -81,15 +87,7 @@
         function mainloop() { // loop !!ISSUE!!
 
             if (gameRun == true) {
-
-                if (isThereAUsername == false) { // Gets username if no username
-                    username = prompt('Please enter your username.');
-                    isThereAUsername = true;
-                }
-                if (username == '') { // Gets username if username not submitted properly
-                    username = prompt('Please enter a correct username.');
-                    isThereAUsername = true;
-                }
+                
                 drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
 
                 //drawSprite(img.jellyfish, 250, 50, 50, 50); // jellyfish test
@@ -104,36 +102,89 @@
                     timer++;
                     timerSeconds = timer / 50;
                 }
+                if (timerSeconds == 60){
+                    winner = true;
+                }
+                if (lives <= 0){
+                    lives - 0;
+                    loser = true;
+                }
+
+                
+                if(winner == true){
+                    drawText(canvas.width / 2 / 4, canvas.height / 2, 'gold', 'You Won!', '25px Arial'); //text
+                }
+                if(loser == true){
+                    drawText(canvas.width / 2 / 4, canvas.height / 2, 'red', 'You lost!', '25px Arial'); //text
+                }
+                
+                if (lives == 0) {
+                    if (winner == true) { // if won
+                        canvasContext.font = "90px Arial Bold"; //text
+                        canvasContext.fillText("Congrats!", 70, canvas.height / 4); //text
+
+                        canvasContext.font = "90px Arial Bold"; //text
+                        canvasContext.fillText("Game Over!", 30, canvas.height / 3); //text
+
+                        canvasContext.font = "30px Arial Bold"; //tExt
+                        canvasContext.fillText("Play again? Press: F5", canvas.width / 4, canvas.height / 2); //text
+
+                        canvasContext.font = "25px Arial Bold"; //text
+                        canvasContext.fillText(username + ", ", canvas.width / 3 + 20, canvas.height / 2 + 50); //text
+                        canvasContext.fillText('You survived 60+ seconds!', 90, canvas.height / 2 + 70); //text
+                        return;
+                    } else { //if fuel is gone
+                        canvasContext.font = "90px Arial Bold"; //text
+                        canvasContext.fillText("Game Over! you ran out of lives before the time ended!", 30, canvas.height / 3); //text
+
+                        canvasContext.font = "30px Arial Bold"; //text
+                        canvasContext.fillText("Play again? Press: F5", canvas.width / 4, canvas.height / 2); //text
+
+                        canvasContext.font = "25px Arial Bold"; //text
+                        canvasContext.fillText(username + ", ", canvas.width / 3 + 20, canvas.height / 2 + 50); //text
+                        canvasContext.fillText('Your time was: ' + timerSeconds.toFixed(2) + ' seconds', 90, canvas.height / 2 + 70); //text
+                        return;
+                    }
+                }
+                
                 playerMove(); //Player Movement
                 playerBoundary(); //Player boundarys
                 jellyRender(); //Jellyfish render
-                jellyMovement();
+                jellyMovement(); //Jellyfish movement
             } else if (gameRun == false) {
                 drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
-                //var difficulty = prompt('Choose what difficulty you would like.', 'Easy, Medium, Hard')
-                if (difficulty == 0) { // selects difficulty
+                if (difficulty != 0) { // selects difficulty
                     difficultySetting();
                 }
-                if (difficultyIsSet == true) {
-                    gameRun = true // starts game
-                }
+                drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', 'Please choose your difficulty', '25px Arial'); //text
+                drawText(canvas.width / 2 / 3, canvas.height / 2 + 30, 'white', 'Use the number keys(1, 2, 3)', '20px Arial'); //text
+                drawText(canvas.width / 3, canvas.height / 2 + 60, 'red', '1 = Easy', '30px Arial'); //text
+                drawText(canvas.width / 3, canvas.height / 2 + 90, 'red', '2 = Medium', '30px Arial'); //text
+                drawText(canvas.width / 3, canvas.height / 2 + 120, 'red', '3 = Hard', '30px Arial'); //text
             }
-        }
+        } // end of main loop
 
         function difficultySetting() {
-            drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', 'Please choose your difficulty', '25px Arial'); //text
-            drawText(canvas.width / 2 / 3, canvas.height / 2 + 30, 'white', 'Use the number keys(1, 2, 3)', '20px Arial'); //text
-            drawText(canvas.width / 3, canvas.height / 2 + 60, 'red', '1 = Easy', '30px Arial'); //text
-            drawText(canvas.width / 3, canvas.height / 2 + 90, 'red', '2 = Medium', '30px Arial'); //text
-            drawText(canvas.width / 3, canvas.height / 2 + 120, 'red', '3 = Hard', '30px Arial'); //text
-            jellyCount = difficulty * 3; // creates the jellys
-            difficultyIsSet = true;
-            console.log(gameRun)
+            jellyCount = difficulty * 3 - 1; // creates the jellys
+            lives = difficulty * 3 + 2
             console.log('Jellyfish:' + jellyCount) // outputs how many jellyfish are created in console
             console.log('Gamemode:' + difficulty) // outputs difficulty in console
+            console.log('Lives:' + lives)
+            usernameEntry(); // sets username
 
             for (i = 0; i <= jellyCount; i++) { // jelly array
                 jellyArray.push(randomJelly());
+            }
+        } // end of difficultySetting
+
+        function usernameEntry() {
+            if (isThereAUsername == false) { // Gets username if no username
+                username = prompt('Please enter a username:');
+                if (username != '' && username != null) {
+                    isThereAUsername = true;
+                    gameRun = true; // sets gamemode true
+                    console.log('User: ' + username);
+                }
             }
         }
 
@@ -156,13 +207,13 @@
                 console.log("rightkeypressed");
             }
 
-        }
+        } // end of playerMove
 
         function jellyRender() {
             jellyArray.forEach(function(jelly, index) {
                 drawSprite(jellyfishImg, jelly.jellyXpos, jelly.jellyYpos, jelly.jellyWidth, jelly.jellyHeight); // jellyfish
             });
-        }
+        } // end of jellyRender
 
         function randomJelly() {
             jellyWidth = jellyfishWidth;
@@ -172,11 +223,11 @@
                 jellyHeight: jellyHeight,
                 jellyXpos: Math.floor(Math.random() * ((canvas.width - jellyWidth))),
                 jellyYpos: 0,
-                jellyXspeed: Math.floor(Math.random() * (10 - 1) + 1),
-                jellyYspeed: Math.floor(Math.random() * (10 - 1) + 1)
+                jellyXspeed: Math.floor(Math.random() * (6 - 1) + 1),
+                jellyYspeed: Math.floor(Math.random() * (6 - 1) + 1)
             }
             return randJelly;
-        }
+        } // end of randomJelly
 
         function jellyMovement() { // the movement for the jelly / jellyfish
             jellyArray.forEach(function(jelly, index) {
@@ -199,7 +250,7 @@
                     lives = lives - 1;
                 }
             });
-        }
+        } // end of jellyMovement
 
         function playerBoundary() {
             if (playerXpos > canvas.width - playerWidth) { // Right side edge
@@ -212,7 +263,7 @@
             if (playerYpos > canvas.height + playerHeight) { // Bottom edge (Saftey in case player exits through bottom of screen somehow?)
                 playerYpos = canvas.height - playerHeight;
             }
-        }
+        } // end of playerBoundary
 
         function keyPressed(evt) { // keys pressed
             if (evt.keyCode == LEFT_KEY) { //< Left key
@@ -236,7 +287,7 @@
                 threeKeyPressed = true;
                 difficulty = 3;
             }
-        }
+        } // end of keyPressed
 
         function keyReleased(evt) { // keys released
             if (evt.keyCode == LEFT_KEY) { //< Left key
@@ -256,25 +307,25 @@
             if (evt.keyCode == 51) { //3
                 threeKeyPressed = false;
             }
-        }
+        } // end of keyReleased
 
         function colorRect(x, y, w, h, c) { // color
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
-        }
+        } // end of colorRect
 
         function drawSprite(src, x, y, w, h) { // draw sprite
             canvasContext.drawImage(src, x, y, w, h);
-        }
+        } // end of drawSprite
 
         function drawText(x, y, color, msg, sizeStyle) { // text
             canvasContext.fillStyle = color;
             canvasContext.font = sizeStyle;
             canvasContext.fillText(msg, x, y);
-        }
+        } // end of drawText
 
         function drawImg(img, sx, sy, sw, sh, x, y, w, h) { // Img
             canvasContext.drawImage(img, sx, sy, sw, sh, x, y, w, h);
-        }
+        } // end of drawImg
     </script>
 </body></html>
