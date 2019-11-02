@@ -39,6 +39,7 @@
         var loser = false;
         var startScreen = true;
         var timerRun = false;
+        var beatTime = 15;
 
         //Player SpriteSheet Vairables
         var playerSxPos = 0;
@@ -102,76 +103,75 @@
                 //Timer:
                 canvasContext.font = "20px Arial"; //Timer text
                 canvasContext.fillText('Timer: ' + timerSeconds.toFixed(2), 0, 20); //Timer text
+                canvasContext.fillText('Lives: ' + lives, canvas.width / 2 + 100, 20); //Timer text
 
                 if (timerRun == true) { //Timer
                     timer++;
                     timerSeconds = timer / 50;
                 }
-                if (timerSeconds == 60) {
+                if (timerSeconds == beatTime) {
                     winner = true;
                     timerRun = false;
-
+                    gameRun = false;
+                    timerSeconds = 20;
+                    return;
                 }
                 if (lives <= 0) {
-                    lives - 0;
+                    lives = 0;
                     loser = true;
+                    gameRun = false;
+                    return;
                 }
 
-                if (lives == 0) {
-                    if (winner == true) { // if won
-                        gameRun = false;
-                        return;
-                    } else if (loser == true) { //if list
-                        gameRun = false;
-                        return;
-                    }
-                }
-
-                playerMove(); //Player Movement
-                playerBoundary(); //Player boundarys
-                jellyRender(); //Jellyfish render
-                jellyMovement(); //Jellyfish movement
-            } else if (gameRun == false) {
-                if (startScreen == true) {
-                    drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
-                    drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', 'Please choose your difficulty', '25px Arial'); //text
-                    drawText(canvas.width / 2 / 3, canvas.height / 2 + 30, 'white', 'Use the number keys(1, 2, 3)', '20px Arial'); //text
-                    drawText(canvas.width / 3, canvas.height / 2 + 60, 'red', '1 = Easy', '30px Arial'); //text
-                    drawText(canvas.width / 3, canvas.height / 2 + 90, 'red', '2 = Medium', '30px Arial'); //text
-                    drawText(canvas.width / 3, canvas.height / 2 + 120, 'red', '3 = Hard', '30px Arial'); //text
-                    if (difficulty != 0) { // selects difficulty
-                        difficultySetting();
-                    }
-                }
-
-
-                if (winner == true) {
-                    drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', '', '25px Arial');
-                    drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', 'Congrat', '25px Arial');
-                    canvasContext.font = "90px Arial Bold"; //text
-                    canvasContext.fillText("Congrats!", 70, canvas.height / 4); //text
-
-                    canvasContext.font = "90px Arial Bold"; //text
-                    canvasContext.fillText("Game Over!", 30, canvas.height / 3); //text
-
-                    canvasContext.font = "30px Arial Bold"; //tExt
-                    canvasContext.fillText("Play again? Press: F5", canvas.width / 4, canvas.height / 2); //text
-
-                    canvasContext.font = "25px Arial Bold"; //text
-                    canvasContext.fillText(username + ", ", canvas.width / 3 + 20, canvas.height / 2 + 50); //text
-                    canvasContext.fillText('You survived 60+ seconds!', 90, canvas.height / 2 + 70); //text
-                }
-                if (loser == true) {
-                    console.log('Loser: true')
-                    drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', '', '25px Arial');
-                    drawText(canvas.width / 2 / 4, canvas.height / 2, 'red', 'Game Over! you ran out of lives before the time ended!', '25px Arial');
-
-                    drawText(canvas.width / 3 / 4, canvas.height / 2 + 60, 'white', 'Play again? Press: F5', '25px Arial');
-
-                    drawText(canvas.width / 3 / 4, canvas.height / 2 + 90, 'white', username + ', ', '25px Arial');
-                    drawText(canvas.width / 3 / 4, canvas.height / 2 + 120, 'white', 'You didnt survive 60+ seconds!', '25px Arial');
+            playerMove(); //Player Movement
+            playerBoundary(); //Player boundarys
+            jellyRender(); //Jellyfish render
+            jellyMovement(); //Jellyfish movement
+        } else if (gameRun == false) {
+            if (startScreen == true) {
+                drawSprite(backgroundImg, 0, 0, canvas.width, canvas.height) // canvas background
+                drawText(canvas.width / 2 / 4, canvas.height / 5, 'white', 'Please choose your difficulty', '25px Arial'); //text
+                drawText(canvas.width / 2 / 3, canvas.height / 5 + 30, 'white', 'Use the number keys(1, 2, 3)', '20px Arial'); //text
+                drawText(canvas.width / 3, canvas.height / 5 + 60, 'red', '1 = Easy', '30px Arial'); //text
+                drawText(canvas.width / 3, canvas.height / 5 + 90, 'red', '2 = Medium', '30px Arial'); //text
+                drawText(canvas.width / 3, canvas.height / 5 + 120, 'red', '3 = Hard', '30px Arial'); //text
+                
+                drawText(canvas.width - canvas.width + 10, canvas.height / 3 + 120, 'red', 'The aim is to doge jellyfish.', '20px Arial'); //text
+                drawText(canvas.width - canvas.width + 10, canvas.height / 3 + 150, 'red', 'Time to beat is: ' + beatTime + ' seconds', '20px Arial'); //text
+                drawText(canvas.width - canvas.width + 10, canvas.height / 3 + 180, 'red', 'Lives decrease if hit by jellyfish', '20px Arial'); //text
+                drawText(canvas.width - canvas.width + 10, canvas.height / 3 + 210, 'red', 'Lives change depending on difficulty.', '20px Arial'); //text
+                
+                if (difficulty != 0) { // selects difficulty
+                    difficultySetting();
                 }
             }
+
+
+            if (winner == true) {
+                console.log('Winner: true')
+                drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', '', '25px Arial');
+                drawText(canvas.width / 2 / 4, canvas.height / 2, 'gold', 'Congrats!', '25px Arial');
+
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 30, 'black', 'Game Over!', '25px Arial');
+
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 60, 'black', 'Play again? Press: F5', '25px Arial');
+
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 90, 'black', username + ', ', '25px Arial');
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 120, 'black', 'You survived ' + beatTime + ' seconds!', '25px Arial');
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 150, 'black', 'and had, ' + lives + " live('s) remaining.", '25px Arial');
+            }
+            if (loser == true) {
+                console.log('Loser: true')
+                drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', '', '25px Arial');
+                drawText(canvas.width / 2 / 4, canvas.height / 2, 'red', 'Game Over! you ran out of ', '25px Arial');
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 30, 'red', 'lives before the time ended!', '25px Arial');
+
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 60, 'black', 'Play again? Press: F5', '25px Arial');
+
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 90, 'black', username + ', ', '25px Arial');
+                drawText(canvas.width / 2 / 4, canvas.height / 2 + 120, 'black', 'You didnt survive ' + beatTime + ' seconds!', '25px Arial');
+            }
+        }
         } // end of main loop
 
         function difficultySetting() {
