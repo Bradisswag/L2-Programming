@@ -66,9 +66,7 @@
         var playerYspeed = 10;
 
         var LEFT_KEY = 37;
-        var UP_KEY = 38;
         var RIGHT_KEY = 39;
-        var DOWN_KEY = 40;
         var leftKeyPressed = false;
         var rightKeyPressed = false;
 
@@ -245,13 +243,13 @@
                 jelly.jellyXpos += jelly.jellyXspeed
                 jelly.jellyYpos += jelly.jellyYspeed
 
-                if (jelly.jellyXpos > canvas.width - jelly.jellyWidth) {
+                if (jelly.jellyXpos > canvas.width - jelly.jellyWidth) {//Rebounds off walls
                     jelly.jellyXspeed *= -1;
                 }
-                if (jelly.jellyXpos < 0) {
+                if (jelly.jellyXpos < 0) {//Rebounds off walls
                     jelly.jellyXspeed *= -1;
                 }
-                if (jelly.jellyYpos > canvas.height - jelly.jellyHeight) {
+                if (jelly.jellyYpos > canvas.height - jelly.jellyHeight) {//teleports jellyfish back to top if at bottom of canvas
                     jelly.jellyYpos = 0 - jelly.jellyHeight;
                 }
                 if (jelly.jellyXpos + jelly.jellyWidth > playerXpos && jelly.jellyXpos < playerXpos + playerWidth && jelly.jellyYpos + jelly.jellyHeight > playerYpos && jelly.jellyYpos < playerYpos + playerHeight) { // collision with jellyfish
@@ -285,15 +283,15 @@
             //            if (evt.keyCode == 32) { //  Space key
             //                spacebarPressed = true;
             //            }
-            if (evt.keyCode == 49) { //1
+            if (evt.keyCode == 49) { //1 keys
                 oneKeyPressed = true;
                 difficulty = 1;
             }
-            if (evt.keyCode == 50) { //2
+            if (evt.keyCode == 50) { //2 keys
                 twoKeyPressed = true;
                 difficulty = 2;
             }
-            if (evt.keyCode == 51) { //3
+            if (evt.keyCode == 51) { //3 keys
                 threeKeyPressed = true;
                 difficulty = 3;
             }
@@ -308,13 +306,13 @@
             }
             //            if (evt.keyCode == 32) { //  Space key
             //                spacebarPressed = false;
-            if (evt.keyCode == 49) { //1
+            if (evt.keyCode == 49) { //1 keys
                 oneKeyPressed = false;
             }
-            if (evt.keyCode == 50) { //2
+            if (evt.keyCode == 50) { //2 keys
                 twoKeyPressed = false;
             }
-            if (evt.keyCode == 51) { //3
+            if (evt.keyCode == 51) { //3 keys
                 threeKeyPressed = false;
             }
         } // end of keyReleased
