@@ -109,14 +109,14 @@
                     timer++;
                     timerSeconds = timer / 50;
                 }
-                if (timerSeconds == beatTime) {
-                    winner = true;
+                if (timerSeconds == beatTime) { //If timer reaches the time to beat
+                    winner = true; // These will happen
                     timerRun = false;
                     gameRun = false;
                     timerSeconds = 20;
                     return;
                 }
-                if (lives <= 0) {
+                if (lives <= 0) {// If lives is 0 game stops
                     lives = 0;
                     loser = true;
                     gameRun = false;
@@ -141,13 +141,13 @@
                 drawText(canvas.width - canvas.width + 10, canvas.height / 3 + 180, 'red', 'Lives decrease if hit by jellyfish', '20px Arial'); //text
                 drawText(canvas.width - canvas.width + 10, canvas.height / 3 + 210, 'red', 'Lives change depending on difficulty.', '20px Arial'); //text
                 
-                if (difficulty != 0) { // selects difficulty
+                if (difficulty != 0) { // If difficulty not set, goes through difficulty setup.
                     difficultySetting();
                 }
             }
 
 
-            if (winner == true) {
+            if (winner == true) { //If the player has beaten the time to beat: Winner screen
                 console.log('Winner: true')
                 drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', '', '25px Arial');
                 drawText(canvas.width / 2 / 4, canvas.height / 2, 'gold', 'Congrats!', '25px Arial');
@@ -160,7 +160,7 @@
                 drawText(canvas.width / 2 / 4, canvas.height / 2 + 120, 'black', 'You survived ' + beatTime + ' seconds!', '25px Arial');
                 drawText(canvas.width / 2 / 4, canvas.height / 2 + 150, 'black', 'and had, ' + lives + " live('s) remaining.", '25px Arial');
             }
-            if (loser == true) {
+            if (loser == true) {// If the player has died while trying to beat the time: Loser screen
                 console.log('Loser: true')
                 drawText(canvas.width / 2 / 4, canvas.height / 2, 'white', '', '25px Arial');
                 drawText(canvas.width / 2 / 4, canvas.height / 2, 'red', 'Game Over! you ran out of ', '25px Arial');
@@ -176,7 +176,7 @@
 
         function difficultySetting() {
             jellyCount = difficulty * 3 - 1; // creates the jellys
-            lives = difficulty * 3 + 2
+            lives = difficulty * 3 + 2; // Set the amount of lives based on what difficulty level picked.
             console.log('Jellyfish:' + jellyCount) // outputs how many jellyfish are created in console
             console.log('Gamemode:' + difficulty) // outputs difficulty in console
             console.log('Lives:' + lives)
@@ -187,54 +187,54 @@
             }
         } // end of difficultySetting
 
-        function usernameEntry() {
+        function usernameEntry() {// Get username function
             if (isThereAUsername == false) { // Gets username if no username
-                username = prompt('Please enter a username:');
-                if (username != '' && username != null) {
-                    isThereAUsername = true;
+                username = prompt('Please enter a username:');// Prompt
+                if (username != '' && username != null) {// If username is valid
+                    isThereAUsername = true; // Sets username check to true
                     gameRun = true; // sets gamemode true
-                    console.log('User: ' + username);
+                    console.log('User: ' + username); // Outputs username in console
                 }
             }
-        }
+        }// End of usernameEntry
 
-        var playerImg = new Image();
+        var playerImg = new Image();// Player Image
         playerImg.src = 'images/player.png';
 
-        var jellyfishImg = new Image();
+        var jellyfishImg = new Image();// Enemy image
         jellyfishImg.src = 'images/singlejellyfish.png';
 
-        var backgroundImg = new Image();
+        var backgroundImg = new Image();// Background
         backgroundImg.src = 'images/background.png';
 
-        function playerMove() {
+        function playerMove() {// Player controls/movement
             if (leftArrowKeyPressed == true) { // Left key movement
                 playerXpos -= playerXspeed;
-                console.log("leftkeypressed");
+//                console.log("leftkeypressed");
             }
             if (rightArrowKeyPressed == true) { // Right key movement
                 playerXpos += playerXspeed;
-                console.log("rightkeypressed");
+//                console.log("rightkeypressed");
             }
 
         } // end of playerMove
 
-        function jellyRender() {
+        function jellyRender() {// Renders jellyfish image
             jellyArray.forEach(function(jelly, index) {
                 drawSprite(jellyfishImg, jelly.jellyXpos, jelly.jellyYpos, jelly.jellyWidth, jelly.jellyHeight); // jellyfish
             });
         } // end of jellyRender
 
-        function randomJelly() {
+        function randomJelly() {// Random jellyfish calculations
             jellyWidth = jellyfishWidth;
             jellyHeight = jellyfishHeight;
-            var randJelly = {
-                jellyWidth: jellyWidth,
-                jellyHeight: jellyHeight,
-                jellyXpos: Math.floor(Math.random() * ((canvas.width - jellyWidth))),
-                jellyYpos: 0,
-                jellyXspeed: Math.floor(Math.random() * (6 - 1) + 1),
-                jellyYspeed: Math.floor(Math.random() * (6 - 1) + 1)
+            var randJelly = { // Differant jellyfishs get differant sizes/speed etc.
+                jellyWidth: jellyWidth, //Width of jellyfish
+                jellyHeight: jellyHeight,// Height of jellyfish
+                jellyXpos: Math.floor(Math.random() * ((canvas.width - jellyWidth))),// X position
+                jellyYpos: 0, // Y position
+                jellyXspeed: Math.floor(Math.random() * (6 - 1) + 1),// X speed (how fast jellyfish is going side to side)
+                jellyYspeed: Math.floor(Math.random() * (6 - 1) + 1)// Y speed (how fast jellyfish is going from top to bottom of screen)
             }
             return randJelly;
         } // end of randomJelly
@@ -254,10 +254,10 @@
                 if (jelly.jellyYpos > canvas.height - jelly.jellyHeight) {
                     jelly.jellyYpos = 0 - jelly.jellyHeight;
                 }
-                if (jelly.jellyXpos + jelly.jellyWidth > playerXpos && jelly.jellyXpos < playerXpos + playerWidth && jelly.jellyYpos + jelly.jellyHeight > playerYpos && jelly.jellyYpos < playerYpos + playerHeight) { // collision 
-                    console.log('You got hit!');
-                    jelly.jellyYpos = canvas.height + jelly.jellyHeight;
-                    lives = lives - 1;
+                if (jelly.jellyXpos + jelly.jellyWidth > playerXpos && jelly.jellyXpos < playerXpos + playerWidth && jelly.jellyYpos + jelly.jellyHeight > playerYpos && jelly.jellyYpos < playerYpos + playerHeight) { // collision with jellyfish
+                    console.log('You got hit!');// Outputs in console 'you got hit!'
+                    jelly.jellyYpos = canvas.height + jelly.jellyHeight; // Teleports jellyfish back to top
+                    lives = lives - 1;// Removes a live
                 }
             });
         } // end of jellyMovement
